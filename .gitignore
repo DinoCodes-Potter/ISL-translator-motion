@@ -1,0 +1,5 @@
+sign-env-310/
+__pycache__/
+ISL_Data/
+*.pyc
+.ipynb_checkpoints/

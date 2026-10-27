@@ -1,99 +1,175 @@
 # Vaani — Indian Sign Language (ISL) Real-Time Translator
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
-[![Computer Vision](https://img.shields.io/badge/Computer--Vision-MediaPipe%20%7C%20OpenCV-darkgreen.svg)](https://mediapipe.dev/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Accessibility](https://img.shields.io/badge/Accessibility-Automated%20Infrastructure-orange.svg)]()
 
-Vaani is an assistive computer vision application designed to bridge communication gaps for the deaf and hard-of-hearing community in India by translating fluid Indian Sign Language (ISL) into real-time text and speech[span_0](start_span)[span_0](end_span).
 
----
+\
 
-## The Problem & The Core Innovation
 
-Most public sign language translation models are optimized for American Sign Language (ASL) and rely heavily on static hand gestures (interpreting a single snapshot frame). 
+Vaani is an assistive computer vision application designed to help bridge communication gaps between Indian Sign Language (ISL) users and people unfamiliar with sign language. It aims to translate dynamic hand movements into text and speech in real time using computer vision and sequential landmark tracking.
 
-Indian Sign Language (ISL) is highly structural, contextual, and dynamic. It relies heavily on spatial movement, facial grammar, and fluid transitions. Vaani addresses two fundamental barriers:
+## The Problem and Core Innovation
 
-1. **The Data Scarcity Problem:** There is a severe lack of high-fidelity, standardized, public datasets for ISL[span_1](start_span)[span_1](end_span). Vaani overcomes this by incorporating a pipeline built on custom, systematically curated regional dataset buffers[span_2](start_span)[span_2](end_span).
-2. **The Temporal Motion Challenge:** Instead of evaluating static isolated frames, Vaani implements a custom **30-frame temporal buffer system**[span_3](start_span)[span_3](end_span). This architecture processes sequence-based spatial tracking vectors over time, allowing it to correctly translate fluid hand motion, gestural direction, and kinetic sign language phrases[span_4](start_span)[span_4](end_span).
+Many sign language recognition systems focus on American Sign Language (ASL) or classify isolated gestures from individual image frames. Indian Sign Language has its own vocabulary and linguistic structure, and recognizing its signs can require understanding movement over time.
 
----
+Vaani focuses on two key challenges:
 
-## Architecture & Core Features
+1. **Data scarcity:** Publicly available, standardized datasets for Indian Sign Language can be limited. Vaani provides a workflow for collecting and organizing custom regional sign-language data, allowing the dataset to be expanded over time.
+2. **Temporal motion recognition:** Rather than relying exclusively on individual frames, Vaani uses a **30-frame temporal buffer** to process sequences of spatial tracking landmarks. This allows the recognition pipeline to consider hand movement and changes in position over time.
 
-* **Real-time Spatial Tracking:** Utilizes Google MediaPipe's Holistic pipeline to extract real-time topographies of hands (21 landmarks per hand), facial landmarks, and pose structures without heavy GPU hardware dependency.
-* **Dynamic Action Recognition:** Processes landmark sequences over a sliding 30-frame window to interpret context and motion-based vocabulary[span_5](start_span)[span_5](end_span).
-* **Custom Dataset Augmentation Matrix:** Features a built-in automated keypoint collection script allowing developers to quickly record, process, and append custom regional ISL phrases locally[span_6](start_span)[span_6](end_span).
-* **Text-to-Speech Integration:** Outputs parsed words and continuous phrases directly to audio output layers for seamless real-time dialogue.
+## Architecture and Features
 
----
+- **Real-Time Spatial Tracking:** Uses Google MediaPipe and OpenCV to extract hand landmarks, facial landmarks, and body-pose information from a live camera feed.
+- **Dynamic Action Recognition:** Processes landmark sequences through a sliding 30-frame window to support recognition of movement-based signs.
+- **Custom Dataset Collection:** Includes a keypoint collection workflow for recording and labeling custom ISL signs and regional variations.
+- **Sequential Model Training:** Provides a training workflow for learning patterns from collected landmark sequences.
+- **Text-to-Speech Integration:** Aims to convert recognized signs into spoken output for more accessible communication.
 
 ## Technology Stack
 
-* **Core Logic:** Python (Advanced logical processing)[span_7](start_span)[span_7](end_span)
-* **Computer Vision Frameworks:** OpenCV, Google MediaPipe Ecosystem[span_8](start_span)[span_8](end_span)
-* **Mathematical Array Processing:** NumPy[span_9](start_span)[span_9](end_span)
-* **Machine Learning Layer:** Scikit-Learn / TensorFlow (Sequential Landmark Pipelines)[span_10](start_span)[span_10](end_span)
-
----
+| Technology                | Purpose                                                                    |
+| ------------------------- | -------------------------------------------------------------------------- |
+| Python                    | Core application logic                                                     |
+| OpenCV                    | Camera input and image processing                                          |
+| Google MediaPipe          | Hand, face, and pose landmark extraction                                   |
+| NumPy                     | Numerical operations and landmark data processing                          |
+| Scikit-learn / TensorFlow | Machine learning and sequence recognition, depending on the implementation |
+| Text-to-Speech            | Spoken output for recognized signs                                         |
 
 ## Repository Structure
 
 ```text
-├── assets/                  # UI Elements and architecture diagrams
-├── data/                    # Generated numpy arrays of tracking points
-│   └── custom_dataset/      # Structured directories of labeled keypoint landmarks
+Vaani-ISL-Translator/
+├── assets/                  # UI elements and architecture diagrams
+├── data/                    # Generated landmark arrays
+│   └── custom_dataset/      # Labeled custom sign-language data
 ├── scripts/
-│   ├── capture_data.py      # Script to systematically generate custom tracking data
-│   ├── train_model.py       # Sequence processing & model fitting script
-│   └── app_main.py          # Main real-time application runtime loop
-├── requirements.txt         # Project runtime dependencies
+│   ├── capture_data.py      # Collect custom landmark sequences
+│   ├── train_model.py       # Train the recognition model
+│   └── app_main.py          # Main real-time application
+├── requirements.txt         # Python dependencies
+├── LICENSE                  # MIT License
 └── README.md
-Getting Started & Installation
-Prerequisites
-Ensure you have Python 3.8+ and a working web camera connected to your system.
-1. Clone the Repository
-git clone [https://github.com/DinoCodes-Potter/Vaani-ISL-Translator.git](https://github.com/DinoCodes-Potter/Vaani-ISL-Translator.git)
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.8 or later
+- A working webcam
+- Git
+- A compatible operating system
+- The dependencies listed in `requirements.txt`
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/DinoCodes-Potter/Vaani-ISL-Translator.git
 cd Vaani-ISL-Translator
-2. Set Up a Virtual Environment (Recommended)
-# On Windows
+```
+
+### 2. Create a Virtual Environment
+
+**Windows**
+
+```bash
 python -m venv venv
 venv\Scripts\activate
+```
 
-# On macOS/Linux
+**macOS / Linux**
+
+```bash
 python3 -m venv venv
 source venv/bin/activate
-3. Install Dependencies
+```
+
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
-Technical Execution & Usage
-Step 1: Custom Keypoint Collection (capture_data.py)
-If you wish to augment the training sequence with custom phrases or regional signs, launch the capture engine. It records sequence paths across 30 distinct intervals:
+```
+
+## Usage
+
+Run the scripts from the repository root.
+
+### Step 1: Collect Custom Sign Data
+
+To record additional signs or regional variations, run:
+
+```bash
 python scripts/capture_data.py
-The script initializes your video capture layout, generates specialized labeling arrays, and creates sequential .npy records of spatial hand structural frames directly into the data/ matrix.
-Step 2: Sequence Engine Training (train_model.py)
-Train or update the temporal parsing logic using your recorded sequence array map:
+```
+
+The collection workflow records landmark sequences and associates them with their corresponding labels. The resulting data can be used to expand the training dataset.
+
+### Step 2: Train the Recognition Model
+
+After collecting the required data, run:
+
+```bash
 python scripts/train_model.py
-Step 3: Run Main Real-Time Translation Application
-Launch the live webcam interface layer to begin real-time translation:
+```
+
+This script trains or updates the recognition model using the available landmark sequences.
+
+### Step 3: Launch the Real-Time Translator
+
+Start the main application:
+
+```bash
 python scripts/app_main.py
-Implementation Roadmap
-• [x] Create automated keypoint generation workflow scripts.  
-• [x] Deploy 30-frame multi-temporal tracking buffer algorithms.  
-• [ ] Implement multi-phrase logic stitching (combining single words into structural syntax sentences).
-• [ ] Port spatial tracking parameters onto lightweight WebGL frameworks to achieve zero-install web capability.
-• [ ] Introduce custom fine-tuning modules leveraging advanced LLM/VLM APIs for deep context correction.
-Contributing
-Contributions to help bridge communication gaps across India are welcome!
-1.	Fork the Repository.
-2.	Create a feature branch (git checkout -b feature/AmazingFeature).
-3.	Commit your changes (git commit -m 'Add some AmazingFeature').
-4.	Push to the branch (git push origin feature/AmazingFeature).
-5.	Open a Pull Request.
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
-Contact & Links
-• Developer: Abhinav Sharma  
-• GitHub Profile: @DinoCodes-Potter  
-• Project Portfolio: Wizard Timer Live  
-• Email: dinobusinessworks@gmail.com
+```
+
+The application initializes the camera and begins processing incoming frames for sign recognition.
+
+> **Note:** Exact setup requirements, supported signs, model configuration, and output behavior depend on the current implementation and available training data.
+
+## Implementation Roadmap
+
+- [x] Develop an automated keypoint collection workflow.
+- [x] Implement a 30-frame temporal tracking buffer.
+- [ ] Improve multi-sign phrase stitching to combine recognized signs into grammatically meaningful sentences.
+- [ ] Explore lightweight WebGL-based tracking for browser-based deployment.
+- [ ] Investigate context-aware correction using language models or vision-language models.
+- [ ] Expand and evaluate the dataset across regional variations, signers, and recording conditions.
+- [ ] Evaluate recognition accuracy, latency, and robustness under different lighting and background conditions.
+
+## Contributing
+
+Contributions that improve sign recognition, accessibility, performance, and support for regional variations are welcome.
+
+1. Fork the repository.
+
+2. Create a feature branch:
+
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+
+3. Commit your changes:
+
+   ```bash
+   git commit -m "Add AmazingFeature"
+   ```
+
+4. Push your branch:
+
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+
+5. Open a pull request describing your changes.
+
+## License
+
+This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) file for details.
+
+## Contact and Links
+
+- **Developer:** Abhinav Sharma
+- **GitHub:** [@DinoCodes-Potter](https://github.com/DinoCodes-Potter)
+- **Project Portfolio:** Wizard Timer Live
+- **Email:** [dinobusinessworks@gmail.com](mailto\:dinobusinessworks@gmail.com)
+

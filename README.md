@@ -1,10 +1,5 @@
 # Vaani — Indian Sign Language (ISL) Real-Time Translator
 
-
-
-\
-
-
 Vaani is an assistive computer vision application designed to help bridge communication gaps between Indian Sign Language (ISL) users and people unfamiliar with sign language. It aims to translate dynamic hand movements into text and speech in real time using computer vision and sequential landmark tracking.
 
 ## The Problem and Core Innovation
